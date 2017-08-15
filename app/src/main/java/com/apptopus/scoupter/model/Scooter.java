@@ -1,5 +1,7 @@
 package com.apptopus.scoupter.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 
@@ -96,4 +98,5 @@ public class Scooter {
     public void setLocation(Location location) {
         this.location = location;
     }
+
 }

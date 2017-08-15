@@ -19,8 +19,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,6 +35,8 @@ public class ScoupterActivity extends FragmentActivity implements OnMapReadyCall
     private GoogleMap mMap;
 
     private ActivityScoupterBinding binding;
+
+    private List<Marker> markers;
 
 
     private final LatLng BERLIN = new LatLng(52.520008, 13.404954);//Berlin <3
@@ -62,12 +66,15 @@ public class ScoupterActivity extends FragmentActivity implements OnMapReadyCall
 
     @Override
     public void updateMapMarkers(List<Scooter> scooters) {
+        markers = new ArrayList<>(scooters.size());
         for (final Scooter scooter : scooters) {
-            mMap.addMarker(new MarkerOptions()
+            Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(LocationUtils.getLatLng(scooter.getLocation()))
-                    .icon(ColorUtils.getBitmapDescriptorFromPercent(scooter.getEnergyLevel())))
-                    .setTag(scooter);//might need later
+                    .icon(ColorUtils.getBitmapDescriptorFromPercent(scooter.getEnergyLevel())));
+            marker.setTag(scooter);
+            markers.add(marker);
         }
+        Scooter closest = LocationUtils.getClosestScooter(BERLIN, scooters);
     }
 
     @Override
